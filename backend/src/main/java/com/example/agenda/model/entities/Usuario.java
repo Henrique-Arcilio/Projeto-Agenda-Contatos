@@ -22,7 +22,7 @@ public class Usuario {
     private String login;
     private String senha;
     @OneToMany
-    private List<Usuario> contatos;
+    private List<Contato> contatos;
 
     public Usuario(String nome, String login, String senha) {
         this.nome = nome;
