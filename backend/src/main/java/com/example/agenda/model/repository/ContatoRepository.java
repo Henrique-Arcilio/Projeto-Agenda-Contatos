@@ -7,5 +7,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ContatoRepository extends JpaRepository<Contato, UUID> {
-    Optional<Contato> findByNumero(String numero);
+    Optional<Contato> findByTelefone(String telefone);
 }

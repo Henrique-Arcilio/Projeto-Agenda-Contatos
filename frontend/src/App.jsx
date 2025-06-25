@@ -1,17 +1,15 @@
-import { Button, Typography, Container, Box } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import CadastroContato from './pages/CadastroContato';
+import '@fontsource/roboto';
+import theme from './theme/theme';
 
 function App() {
   return (
-    <Container>
-      <Box sx={{ mt: 5 }}>
-        <Typography variant="h4" gutterBottom>
-          Agenda de Contatos
-        </Typography>
-        <Button variant="contained" color="primary">
-          Clique aqui
-        </Button>
-      </Box>
-    </Container>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <CadastroContato />
+    </ThemeProvider>
   );
 }
 

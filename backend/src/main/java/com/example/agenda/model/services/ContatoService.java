@@ -15,7 +15,7 @@ public class ContatoService {
     }
 
     public Contato salvar(Contato contato){
-        Optional<Contato> existente = contatoRepository.findByNumero(contato.getNumero());
+        Optional<Contato> existente = contatoRepository.findByTelefone(contato.getTelefone());
         if (existente.isEmpty()) {
             return contatoRepository.save(contato);
         }
