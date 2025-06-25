@@ -19,12 +19,12 @@ public class Contato {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String nome;
-    private String numero;
+    private String telefone;
     private String email;
 
-    public Contato(String nome, String numero, String email) {
+    public Contato(String nome, String telefone, String email) {
         this.nome = nome;
-        this.numero = numero;
+        this.telefone = telefone;
         this.email = email;
     }
 }
