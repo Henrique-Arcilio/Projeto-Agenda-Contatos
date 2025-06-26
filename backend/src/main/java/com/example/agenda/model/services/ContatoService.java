@@ -5,6 +5,7 @@ import com.example.agenda.model.entities.Contato;
 import com.example.agenda.model.repository.ContatoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,6 +24,17 @@ public class ContatoService {
         }
         return null;
     }
+
+    public List<Contato> listar(){
+        return contatoRepository.findAll();
+    }
+
+    public boolean deletar(UUID id){
+        if (contatoRepository.existsById(id)){
+            contatoRepository.deleteById(id);
+            return true;
+        }
+        return false;
 
     public boolean editar(UUID id, ContatoEditarDTO contatoEditarDTO){
         Contato contato = contatoRepository.findById(id).get();

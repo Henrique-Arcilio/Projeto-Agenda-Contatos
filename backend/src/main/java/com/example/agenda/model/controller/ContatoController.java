@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.util.List;
+
 import java.util.UUID;
 
 @RestController
@@ -24,6 +27,17 @@ public class ContatoController {
         return contato;
     }
 
+
+    @GetMapping("/listar")
+    public List<Contato> listarContatos(){
+        return contatoService.listar();
+    }
+
+    @DeleteMapping("/deletar/{id}")
+    public ResponseEntity<Void> deletarContato(@PathVariable("id") String id){
+        UUID idContato = UUID.fromString(id);
+        boolean contatoDeletado = contatoService.deletar(idContato);
+        if (contatoDeletado) {
     @PutMapping("/editar/{id}")
     public ResponseEntity<Contato> editarContato(@PathVariable("id") String id, @RequestBody ContatoEditarDTO contatoEditarDTO){
         UUID idContato = UUID.fromString(id);
@@ -33,5 +47,6 @@ public class ContatoController {
         } else {
             return ResponseEntity.notFound().build();
         }
+
     }
 }
