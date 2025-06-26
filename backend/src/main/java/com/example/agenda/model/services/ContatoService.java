@@ -38,6 +38,7 @@ public class ContatoService {
         return false;
     }
 
+
     public boolean editar(UUID id, ContatoEditarDTO contatoEditarDTO){
         Contato contato = contatoRepository.findById(id).get();
         contato.setNome(contatoEditarDTO.getNome());

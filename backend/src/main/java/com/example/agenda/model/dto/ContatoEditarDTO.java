@@ -29,4 +29,5 @@ public class ContatoEditarDTO {
     public void setTelefone(String telefone) {
         this.telefone = telefone;
     }
+
 }
