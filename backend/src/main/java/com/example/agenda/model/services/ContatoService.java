@@ -4,6 +4,7 @@ import com.example.agenda.model.entities.Contato;
 import com.example.agenda.model.repository.ContatoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,5 +21,9 @@ public class ContatoService {
             return contatoRepository.save(contato);
         }
         return null;
+    }
+
+    public List<Contato> listar(){
+        return contatoRepository.findAll();
     }
 }
