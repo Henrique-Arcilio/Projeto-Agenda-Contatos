@@ -1,8 +1,10 @@
-import axios, {Axios} from 'axios';
-import { useEffect } from "react"
-import {Button} from "@mui/material";
-import {useNavigate} from 'react-router-dom';
-import {useState} from "react";
+import axios, { Axios } from 'axios';
+import { useEffect } from "react";
+import { Button } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
 
 const VisualizarContato = () => {
 
@@ -20,14 +22,6 @@ const VisualizarContato = () => {
     }, []);
 
     return (
-        <body style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '100vh',
-            backgroundColor: '#f5f5f5'
-        }}>
-        
         <div style={{
             maxWidth: '1000px',
             margin: '40px auto',
@@ -73,6 +67,7 @@ const VisualizarContato = () => {
                         padding : '10px',
                         borderBottom: '1px solid #ccc',
                     }}>Telefone</th>
+                    <th>Açao</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -93,6 +88,18 @@ const VisualizarContato = () => {
                                 padding : '10px',
                                 borderBottom: '1px solid #ccc',
                             }}>{contato.telefone}</td>
+                            <td>
+                                <IconButton aria-label="delete" onClick={() => {
+                                    axios.delete(`http://localhost:8080/contatos/deletar/${contato.id}`)
+                                    .then(response => {
+                                        console.log(response);
+                                        window.location.reload();
+                                    })
+                                    .catch(error => console.error("Erro ao deletar contato:", error));
+                                }}>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </td>
                         </tr>
                     ))
                 )}
@@ -115,7 +122,6 @@ const VisualizarContato = () => {
             }> Adicionar Contato
             </Button>
             </div>
-        </body>
     )
 }
 

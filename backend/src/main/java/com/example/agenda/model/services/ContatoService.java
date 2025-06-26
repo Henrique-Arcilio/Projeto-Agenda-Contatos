@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ContatoService {
@@ -25,5 +26,13 @@ public class ContatoService {
 
     public List<Contato> listar(){
         return contatoRepository.findAll();
+    }
+
+    public boolean deletar(UUID id){
+        if (contatoRepository.existsById(id)){
+            contatoRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
