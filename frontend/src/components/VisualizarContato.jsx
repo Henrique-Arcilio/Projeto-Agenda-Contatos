@@ -1,3 +1,4 @@
+
 import axios, { Axios } from 'axios';
 import { useEffect } from "react";
 import { Button } from "@mui/material";
@@ -5,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
+
 
 const VisualizarContato = () => {
 
@@ -23,6 +25,7 @@ const VisualizarContato = () => {
 
     return (
         <div style={{
+
             maxWidth: '1000px',
             margin: '40px auto',
             padding: '30px',

@@ -3,6 +3,7 @@ package com.example.agenda.model.services;
 import com.example.agenda.model.dto.ContatoEditarDTO;
 import com.example.agenda.model.entities.Contato;
 import com.example.agenda.model.repository.ContatoRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,6 +36,8 @@ public class ContatoService {
             return true;
         }
         return false;
+    }
+
 
     public boolean editar(UUID id, ContatoEditarDTO contatoEditarDTO){
         Contato contato = contatoRepository.findById(id).get();
