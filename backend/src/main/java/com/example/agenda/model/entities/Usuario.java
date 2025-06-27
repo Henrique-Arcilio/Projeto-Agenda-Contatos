@@ -28,10 +28,11 @@ public class Usuario {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Contato> bloqueados;
 
-    public Usuario(String nome, String login, String senha) {
+    public Usuario(String nome, String login, String senha, String telefone) {
        this.nome = nome;
         this.login = login;
         this.senha = senha;
+        this.telefone = telefone;
         contatos = new ArrayList<>();
     }
 

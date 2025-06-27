@@ -32,7 +32,6 @@ public class ContatoController {
         }
     }
 
-
     @GetMapping("/listar")
     public List<Contato> listarContatos(){
         return contatoService.listar();

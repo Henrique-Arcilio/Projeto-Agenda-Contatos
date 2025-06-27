@@ -20,7 +20,12 @@ const ContatoForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:8080/contatos/salvar', formData)
+    axios.post('http://localhost:8080/contatos/salvar', formData, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    
       .then(res => {
         setFormData({
           nome: '',
@@ -28,6 +33,7 @@ const ContatoForm = () => {
           telefone: ''
         });
         console.log(res);
+        
       })
       .catch(erro => console.log(erro));
       
@@ -165,9 +171,6 @@ const ContatoForm = () => {
 
       
     </div>
-
-
-    
   );
 };
 
