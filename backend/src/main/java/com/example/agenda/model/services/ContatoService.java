@@ -1,9 +1,8 @@
 package com.example.agenda.model.services;
 
-import com.example.agenda.model.dto.ContatoEditarDTO;
+import com.example.agenda.model.controller.dto.ContatoEditarDTO;
 import com.example.agenda.model.entities.Contato;
 import com.example.agenda.model.repository.ContatoRepository;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
