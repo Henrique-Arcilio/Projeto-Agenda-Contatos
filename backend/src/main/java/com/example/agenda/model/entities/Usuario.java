@@ -24,6 +24,8 @@ public class Usuario {
     private String senha;
     @OneToMany (cascade = CascadeType.REMOVE)
     private List<Contato> contatos;
+    @OneToMany(cascade = CascadeType.REMOVE)
+    private List<Contato> bloqueados;
 
     public Usuario(String nome, String login, String senha) {
         this.nome = nome;

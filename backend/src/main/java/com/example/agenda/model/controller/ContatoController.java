@@ -2,7 +2,9 @@ package com.example.agenda.model.controller;
 
 import com.example.agenda.model.controller.dto.ContatoEditarDTO;
 import com.example.agenda.model.entities.Contato;
+import com.example.agenda.model.entities.Usuario;
 import com.example.agenda.model.services.ContatoService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
@@ -56,8 +58,14 @@ public class ContatoController {
             return ResponseEntity.notFound().build();
         }
 
-
-
     }
-
+    @PutMapping("/bloquear/{id}")
+    public ResponseEntity<String> bloquearContato(@PathVariable UUID id, HttpSession session){
+        try {
+            contatoService.bloquear(id, (Usuario) session.getAttribute("usuario"));
+            return ResponseEntity.ok().body("O usuário foi bloqueado");
+        }catch (ClassNotFoundException e){
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

@@ -2,6 +2,7 @@ package com.example.agenda.model.services;
 
 import com.example.agenda.model.controller.dto.ContatoEditarDTO;
 import com.example.agenda.model.entities.Contato;
+import com.example.agenda.model.entities.Usuario;
 import com.example.agenda.model.repository.ContatoRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 @Service
 public class ContatoService {
+    private UsuarioService usuarioService;
     private ContatoRepository contatoRepository;
 
     public ContatoService(ContatoRepository contatoRepository) {
@@ -45,5 +47,16 @@ public class ContatoService {
         contato.setEmail(contatoEditarDTO.getEmail());
         contatoRepository.save(contato);
         return true;
+    }
+    public void bloquear(UUID id, Usuario usuario) throws ClassNotFoundException{
+        Contato contato = contatoRepository.findById(id).orElse(null);
+        usuario = usuarioService.findById(usuario.getId());
+        if(contato == null) {
+            throw new ClassNotFoundException("O contato não está na lista do usuário");
+        }
+        usuario.getContatos().remove(contato);
+        usuario.getBloqueados().add(contato);
+        contatoRepository.save(contato);
+        usuarioService.save(usuario);
     }
 }

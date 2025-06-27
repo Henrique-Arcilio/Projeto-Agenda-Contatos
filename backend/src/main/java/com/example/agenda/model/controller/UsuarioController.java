@@ -22,7 +22,7 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<String> criar(@RequestBody Usuario usuario){
-        boolean criado = service.save(usuario);
+        boolean criado = service.criarConta(usuario);
         if(criado){
             return  ResponseEntity.ok().body("Cadastro criado com sucesso");
         }
@@ -37,5 +37,6 @@ public class UsuarioController {
         }
         return ResponseEntity.status(401).body("Login ou senha inválida");
     }
+
 
 }
