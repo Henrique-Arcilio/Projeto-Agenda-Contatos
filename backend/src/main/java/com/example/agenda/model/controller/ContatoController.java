@@ -1,6 +1,6 @@
 package com.example.agenda.model.controller;
 
-import com.example.agenda.model.controller.dto.ContatoEditarDTO;
+import com.example.agenda.model.dto.ContatoEditarDTO;
 import com.example.agenda.model.entities.Contato;
 import com.example.agenda.model.services.ContatoService;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
+
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -51,7 +55,7 @@ public class ContatoController {
         UUID idContato = UUID.fromString(id);
         boolean contatoEditado = contatoService.editar(idContato, contatoEditarDTO);
         if (contatoEditado) {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
         }
