@@ -22,15 +22,17 @@ public class Usuario {
     private String nome;
     private String login;
     private String senha;
-    @OneToMany (cascade = CascadeType.REMOVE)
+    private String telefone;
+    @OneToMany (fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Contato> contatos;
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Contato> bloqueados;
 
     public Usuario(String nome, String login, String senha) {
-        this.nome = nome;
+       this.nome = nome;
         this.login = login;
         this.senha = senha;
         contatos = new ArrayList<>();
     }
+
 }

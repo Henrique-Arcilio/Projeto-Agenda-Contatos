@@ -49,4 +49,7 @@ public class UsuarioService {
     public Usuario findById(UUID id){
         return repository.findById(id).orElse(null);
     }
+    public Usuario findByTelefone(String telefone){
+        return repository.findByTelefone(telefone).orElse(null);
+    }
 }

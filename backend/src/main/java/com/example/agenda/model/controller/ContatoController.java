@@ -23,9 +23,13 @@ public class ContatoController {
     }
 
     @PostMapping("/salvar")
-    public Contato  salvarContato(@RequestBody Contato contato){
-        contatoService.salvar(contato);
-        return contato;
+    public ResponseEntity<String> salvarContato(@RequestBody Contato contato, HttpSession session){
+        try {
+            contatoService.salvarContato(contato, (Usuario) session.getAttribute("usuario"));
+            return ResponseEntity.ok().body("Contato salvo");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 

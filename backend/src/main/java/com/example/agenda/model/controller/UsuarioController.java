@@ -20,7 +20,7 @@ public class UsuarioController {
         this.session = session;
     }
 
-    @PostMapping
+    @PostMapping("/cadastro")
     public ResponseEntity<String> criar(@RequestBody Usuario usuario){
         boolean criado = service.criarConta(usuario);
         if(criado){
