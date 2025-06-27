@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UsuarioService {
@@ -31,7 +32,7 @@ public class UsuarioService {
         }
         return session;
     }
-    public Boolean save(Usuario usuario){
+    public Boolean criarConta(Usuario usuario){
         Optional<Usuario> optionalUsuario =  repository.findUsuariosByLogin(usuario.getLogin());
         if(optionalUsuario.isPresent()){
             return false;
@@ -40,5 +41,15 @@ public class UsuarioService {
         usuario.setSenha(senhaEncriptada);
         repository.save(usuario);
         return true;
+    }
+
+    public Usuario save(Usuario usuario){
+        return repository.save(usuario);
+    }
+    public Usuario findById(UUID id){
+        return repository.findById(id).orElse(null);
+    }
+    public Usuario findByTelefone(String telefone){
+        return repository.findByTelefone(telefone).orElse(null);
     }
 }
