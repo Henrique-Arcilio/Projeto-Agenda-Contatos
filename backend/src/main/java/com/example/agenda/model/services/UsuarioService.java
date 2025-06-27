@@ -23,15 +23,16 @@ public class UsuarioService {
     public HttpSession autenticar(UsuarioLogarDto usuarioLogarDto, HttpSession session){
         session.setAttribute("usuario", null);
         String login = usuarioLogarDto.getLogin();
-        Usuario usuario = repository.findUsuariosByLogin(login).orElseGet(null);
-        if(usuario != null){
-            if(encriptador.matches(usuarioLogarDto.getSenha(), usuario.getSenha())){
-                 session.setAttribute("usuario", usuario);
-                 return session;
+        Optional<Usuario> opUsuario = repository.findUsuariosByLogin(login);
+        if(opUsuario.isPresent()){
+            if(encriptador.matches(usuarioLogarDto.getSenha(), opUsuario.get().getSenha())){
+                session.setAttribute("usuario", opUsuario.get());
+                return session;
             }
         }
         return session;
     }
+
     public Boolean criarConta(Usuario usuario){
         Optional<Usuario> optionalUsuario =  repository.findUsuariosByLogin(usuario.getLogin());
         if(optionalUsuario.isPresent()){
