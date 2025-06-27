@@ -4,6 +4,7 @@ import com.example.agenda.model.entities.Usuario;
 import com.example.agenda.model.controller.dto.UsuarioLogarDto;
 import com.example.agenda.model.services.UsuarioService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,10 +21,13 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> criar(@RequestBody Usuario usuario){
-        System.out.println();
-        usuario = service.save(usuario);
-        return  ResponseEntity.status(201).body(usuario);
+    public ResponseEntity<String> criar(@RequestBody Usuario usuario){
+        boolean criado = service.save(usuario);
+        if(criado){
+            return  ResponseEntity.ok().body("Cadastro criado com sucesso");
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Login já existe");
+
     }
     @GetMapping("/autenticacao")
     public ResponseEntity<String> autenticar(@RequestBody UsuarioLogarDto loginDto, HttpSession session){

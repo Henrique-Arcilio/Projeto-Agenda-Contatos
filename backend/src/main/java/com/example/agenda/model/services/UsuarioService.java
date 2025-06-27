@@ -6,6 +6,8 @@ import com.example.agenda.model.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UsuarioService {
     private UsuarioRepository repository;
@@ -25,7 +27,12 @@ public class UsuarioService {
         }
         return session;
     }
-    public Usuario save(Usuario usuario){
-        return repository.save(usuario);
+    public Boolean save(Usuario usuario){
+        Optional<Usuario> optionalUsuario =  repository.findUsuariosByLogin(usuario.getLogin());
+        if(optionalUsuario.isPresent()){
+            return false;
+        }
+        repository.save(usuario);
+        return true;
     }
 }
