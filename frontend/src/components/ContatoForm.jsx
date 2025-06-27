@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { TextField, Button } from '@mui/material';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ContatoForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
@@ -31,8 +33,11 @@ const ContatoForm = () => {
       
   };
 
-  return (
+  const redirectVisualizar = () => {
+    navigate('/contato/visualizar');
+  }
 
+  return (
     <div style={{
       display: 'flex',
       justifyContent: 'center',
@@ -48,33 +53,6 @@ const ContatoForm = () => {
         backgroundColor: '#fff',
         borderRadius: '20px',
         boxShadow: '0 8px 24px rgba(0,0,0,0.1)',
-
-    <body style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        backgroundColor: '#f5f5f5'
-    }}>
-
-    <div style={{
-        maxWidth: '420px',
-        margin: '40px auto',
-        padding: '30px',
-        backgroundColor: '#fff',
-        borderRadius: '20px',
-        boxShadow: '0 8px 24px rgba(0,0,0,0.1)',
-        fontFamily: 'roboto'
-    }}>
-
-      <h2
-      style={{
-        textAlign: 'center',
-        fontSize: '24px',
-        fontWeight: '600',
-        color: '#000',
-        marginBottom: '20px',
-
         fontFamily: 'roboto'
       }}>
         <h2 style={{
@@ -87,20 +65,11 @@ const ContatoForm = () => {
           Adicionar Contato
         </h2>
 
-
         <form onSubmit={handleSubmit}>
           <TextField
             id="nome-contato"
             label="Nome"
             name="nome"
-
-      <form onSubmit={handleSubmit}>
-        <div>
-          <TextField
-            id="standard-basic nomeContato"
-            label="Nome"
-            name='nome'
-
             value={formData.nome}
             onChange={handleChange}
             variant="outlined"
@@ -115,13 +84,12 @@ const ContatoForm = () => {
           />
 
           <TextField
-
-            id="standard-basic nomeContato"
+            id="email-contato"
             label="Email"
-            name='email'
+            name="email"
             value={formData.email}
             onChange={handleChange}
-            vvariant="outlined"
+            variant="outlined"
             type="email"
             fullWidth
             sx={{
@@ -133,11 +101,10 @@ const ContatoForm = () => {
           />
 
           <TextField
-
+            id="telefone-contato"
             label="Telefone"
-            type='number'
-            name='telefone'
-
+            name="telefone"
+            type="tel"
             value={formData.telefone}
             onChange={handleChange}
             variant="outlined"
@@ -145,12 +112,11 @@ const ContatoForm = () => {
             required
             sx={{
               marginBottom: '16px',
-
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '12px'
-                  }
-            }}/>
-
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '12px'
+              }
+            }}
+          />
 
           <Button
             variant="contained"
@@ -169,18 +135,39 @@ const ContatoForm = () => {
                 backgroundColor: '#005FCC'
               }
             }}
-
-            >
-              Salvar
-
+          >
+            Salvar
           </Button>
         </form>
+        <Button 
+          variant="outlined"
+          color="primary"
+          type="submit"
+          fullWidth
+
+          sx={{
+            borderRadius: '12px',
+            textTransform: 'none',
+            fontWeight: '600',
+            fontSize: '16px',
+            padding: '10px 0',
+            marginTop: '10px',
+            '&:hover': {
+                backgroundColor: '#ccdff4',
+                borderColor: '#005FCC'
+            }
+            }}
+
+          onClick={redirectVisualizar}> 
+          Visualizar Contatos
+        </Button>
       </div>
 
       
     </div>
 
-    </body>
+
+    
   );
 };
 
