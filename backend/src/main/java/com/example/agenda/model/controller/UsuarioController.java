@@ -29,10 +29,10 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Login já existe");
 
     }
-    @GetMapping("/autenticacao")
+    @PostMapping("/autenticacao")
     public ResponseEntity<String> autenticar(@RequestBody UsuarioLogarDto loginDto, HttpSession session){
         session = service.autenticar(loginDto, session);
-        if(session != null){
+        if(session.getAttribute("usuario") != null){
             return ResponseEntity.ok().body("Login validado");
         }
         return ResponseEntity.status(401).body("Login ou senha inválida");
