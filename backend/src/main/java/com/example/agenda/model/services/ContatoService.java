@@ -71,4 +71,17 @@ public class ContatoService {
         contatoRepository.save(contato);
         usuarioService.save(usuario);
     }
+    public void desbloquear(UUID id, Usuario usuario) throws ClassNotFoundException{
+        Contato contato = contatoRepository.findById(id).orElse(null);
+        usuario = usuarioService.findById(usuario.getId());
+        if(contato == null) {
+            throw new ClassNotFoundException("Contato informado não existe");
+        }else if(!usuario.getBloqueados().contains(contato)){
+            throw new ClassNotFoundException("Contato informado não está bloqueado");
+        }
+        usuario.getBloqueados().remove(contato);
+        usuario.getContatos().add(contato);
+        contatoRepository.save(contato);
+        usuarioService.save(usuario);
+    }
 }

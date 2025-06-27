@@ -69,7 +69,16 @@ public class ContatoController {
             contatoService.bloquear(id, (Usuario) session.getAttribute("usuario"));
             return ResponseEntity.ok().body("O usuário foi bloqueado");
         }catch (ClassNotFoundException e){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @PutMapping("/desbloquear/{id}")
+    public ResponseEntity<String> desbloquearcontato(@PathVariable UUID id, HttpSession session){
+        try {
+            contatoService.desbloquear(id, (Usuario) session.getAttribute("usuario"));
+            return ResponseEntity.ok().body("O usuário foi desbloqueado");
+        }catch (ClassNotFoundException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }
