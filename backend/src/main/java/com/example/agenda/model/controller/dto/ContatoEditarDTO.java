@@ -1,4 +1,4 @@
-package com.example.agenda.model.dto;
+package com.example.agenda.model.controller.dto;
 
 public class ContatoEditarDTO {
 
