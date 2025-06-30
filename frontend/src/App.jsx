@@ -7,7 +7,7 @@ import theme from './theme/theme';
 import VisualizarContato from './components/VisualizarContato.jsx';
 import ContatoForm from './components/ContatoForm.jsx';
 import Login from './components/Login.jsx';
-import EditarContato from './components/EditarContato.jsx';
+import DetalhesContato from './components/DetalhesContato.jsx';
 import Cadastro from './components/Cadastro.jsx'
 
 function App() {
@@ -20,7 +20,7 @@ function App() {
                 <Route path="/contato/adicionar" element={<ContatoForm />} />
                 <Route path="/contato/visualizar" element={<VisualizarContato />} />
                 <Route path="/usuario/cadastrar" element={<Cadastro />}></Route>
-                <Route path="/contato/editar/:id" element={<EditarContato />} />
+                <Route path="/contato/detalhesContato/:id" element={<DetalhesContato />} />
             </Routes>
         </Router>
     </ThemeProvider>

@@ -17,7 +17,7 @@ const VisualizarContato = () => {
   };
 
   const editarContato = (id) => {
-    navigate(`/contato/editarContato/${id}`);
+    navigate(`/contato/detalhesContato/${id}`);
   };
 
   useEffect(() => {

@@ -5,6 +5,7 @@ import com.example.agenda.model.entities.Contato;
 import com.example.agenda.model.entities.Usuario;
 import com.example.agenda.model.services.ContatoService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
@@ -50,7 +51,6 @@ public class ContatoController {
 
     }
 
-
     @PutMapping("/editar/{id}")
     public ResponseEntity<Contato> editarContato(@PathVariable("id") String id, @RequestBody ContatoEditarDTO contatoEditarDTO){
         UUID idContato = UUID.fromString(id);
@@ -62,6 +62,7 @@ public class ContatoController {
         }
 
     }
+
     @PutMapping("/bloquear/{id}")
     public ResponseEntity<String> bloquearContato(@PathVariable UUID id, HttpSession session){
         try {
@@ -71,6 +72,7 @@ public class ContatoController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     @PutMapping("/desbloquear/{id}")
     public ResponseEntity<String> desbloquearcontato(@PathVariable UUID id, HttpSession session){
         try {
@@ -80,4 +82,22 @@ public class ContatoController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Contato> buscarContatoPorId(@PathVariable UUID id, HttpSession session) {
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if (usuario == null) {
+            return ResponseEntity.status(401).build(); // Não autorizado
+        }
+
+        Contato contato = contatoService.buscarPorId(id, usuario);
+        if (contato != null) {
+            return ResponseEntity.ok(contato);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
+
 }
