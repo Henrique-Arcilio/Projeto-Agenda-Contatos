@@ -1,15 +1,17 @@
-import axios from 'axios';
-import { TextField, Button } from '@mui/material';
-import { useState } from 'react';
+import { TextField, Button, Alert } from "@mui/material";
+import axios from "axios";
+import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
-const ContatoForm = () => {
+const Login = () => {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    nome: '',
-    email: '',
-    telefone: ''
+    login: '',
+    senha: ''
   });
+
+  const [erroLogin, setErroLogin] = useState(false); 
 
   const handleChange = (e) => {
     setFormData({
@@ -20,27 +22,20 @@ const ContatoForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:8080/contatos/salvar', formData, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    
-      .then(res => {
-        setFormData({
-          nome: '',
-          email: '',
-          telefone: ''
-        });
-        console.log(res);
-        
+    setErroLogin(false);
+
+    axios.post('http://localhost:8080/usuarios/autenticacao', formData)
+      .then(() => {
+        navigate('/contato/visualizar');
       })
-      .catch(erro => console.log(erro));
-      
+      .catch((erro) => {
+        console.log(erro);
+        setErroLogin(true);
+      });
   };
 
-  const redirectVisualizar = () => {
-    navigate('/contato/visualizar');
+  const redirectCadastrar = () => {
+    navigate('/usuario/cadastrar');
   }
 
   return (
@@ -68,15 +63,22 @@ const ContatoForm = () => {
           color: '#000',
           marginBottom: '20px'
         }}>
-          Adicionar Contato
+          Login
         </h2>
+
+        {/* ✅ Exibe alerta se login falhar */}
+        {erroLogin && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            Login ou senha inválidos.
+          </Alert>
+        )}
 
         <form onSubmit={handleSubmit}>
           <TextField
-            id="nome-contato"
-            label="Nome"
-            name="nome"
-            value={formData.nome}
+            id="login"
+            label="Login"
+            name="login"
+            value={formData.login}
             onChange={handleChange}
             variant="outlined"
             fullWidth
@@ -88,30 +90,13 @@ const ContatoForm = () => {
               }
             }}
           />
-
           <TextField
-            id="email-contato"
-            label="Email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            variant="outlined"
-            type="email"
-            fullWidth
-            sx={{
-              marginBottom: '16px',
-              '& .MuiOutlinedInput-root': {
-                borderRadius: '12px'
-              }
-            }}
-          />
-
-          <TextField
-            id="telefone-contato"
-            label="Telefone"
-            name="telefone"
-            type="tel"
-            value={formData.telefone}
+            id="outlined-password-input"
+            label="Senha"
+            name="senha"
+            type="password"
+            autoComplete="current-password"
+            value={formData.senha}
             onChange={handleChange}
             variant="outlined"
             fullWidth
@@ -129,7 +114,6 @@ const ContatoForm = () => {
             color="primary"
             type="submit"
             fullWidth
-
             sx={{
               backgroundColor: '#007AFF',
               borderRadius: '12px',
@@ -142,7 +126,7 @@ const ContatoForm = () => {
               }
             }}
           >
-            Salvar
+            Logar
           </Button>
         </form>
         <Button 
@@ -164,14 +148,12 @@ const ContatoForm = () => {
             }
             }}
 
-          onClick={redirectVisualizar}> 
-          Visualizar Contatos
+          onClick={redirectCadastrar}> 
+          Criar Conta
         </Button>
       </div>
-
-      
     </div>
   );
 };
 
-export default ContatoForm;
+export default Login;

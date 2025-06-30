@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -26,5 +27,17 @@ public class Contato {
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Contato contato = (Contato) o;
+        return Objects.equals(telefone, contato.telefone);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(telefone);
     }
 }

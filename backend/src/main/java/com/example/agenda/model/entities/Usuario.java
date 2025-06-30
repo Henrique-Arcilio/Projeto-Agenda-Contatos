@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,12 +22,18 @@ public class Usuario {
     private String nome;
     private String login;
     private String senha;
-    @OneToMany
+    private String telefone;
+    @OneToMany (fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Contato> contatos;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<Contato> bloqueados;
 
-    public Usuario(String nome, String login, String senha) {
-        this.nome = nome;
+    public Usuario(String nome, String login, String senha, String telefone) {
+       this.nome = nome;
         this.login = login;
         this.senha = senha;
+        this.telefone = telefone;
+        contatos = new ArrayList<>();
     }
+
 }
