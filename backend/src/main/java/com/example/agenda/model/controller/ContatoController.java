@@ -2,7 +2,11 @@ package com.example.agenda.model.controller;
 
 import com.example.agenda.model.controller.dto.ContatoEditarDTO;
 import com.example.agenda.model.entities.Contato;
+
+import com.example.agenda.model.repository.ContatoRepository;
+
 import com.example.agenda.model.entities.Usuario;
+
 import com.example.agenda.model.services.ContatoService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
@@ -17,6 +21,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/contatos")
 public class ContatoController {
+
+    private ContatoRepository contatoRepository;
     private ContatoService contatoService;
 
     public ContatoController(ContatoService contatoService) {
@@ -98,6 +104,14 @@ public class ContatoController {
         }
     }
 
+    @GetMapping("/buscar-por-nome")
+    public List<Contato> buscarPorNome(@RequestParam String nome) {
+        return contatoRepository.buscarPorNome(nome);
+    }
 
+    @GetMapping("/buscar-por-email")
+    public List<Contato> buscarPorEmail(@RequestParam String email) {
+        return contatoRepository.buscarPorEmail(email);
+    }
 
 }
