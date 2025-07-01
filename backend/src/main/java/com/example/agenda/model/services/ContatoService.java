@@ -4,6 +4,8 @@ import com.example.agenda.model.controller.dto.ContatoEditarDTO;
 import com.example.agenda.model.entities.Contato;
 import com.example.agenda.model.entities.Usuario;
 import com.example.agenda.model.repository.ContatoRepository;
+import com.example.agenda.model.repository.UsuarioRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,27 +16,28 @@ import java.util.UUID;
 public class ContatoService {
     private UsuarioService usuarioService;
     private ContatoRepository contatoRepository;
+    private UsuarioRepository usuarioRepository;
 
-    public ContatoService(UsuarioService usuarioService, ContatoRepository contatoRepository) {
+    public ContatoService(UsuarioService usuarioService, ContatoRepository contatoRepository, UsuarioRepository usuarioRepository) {
         this.usuarioService = usuarioService;
         this.contatoRepository = contatoRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     public void salvarContato(Contato contato, Usuario usuario) throws Exception{
+
         if(usuario.getTelefone().equals(contato.getTelefone())){
             throw new Exception("Você não pode salvar o próprio número");
         }
         if(usuario.getContatos().contains(contato)){
             throw new Exception("O contato já está na sua agenda");
         }
-        if(usuario.getBloqueados().contains(contato)){
-            throw  new Exception("O contato já existe e está bloqueado");
-        }
         Usuario donoDoContato = usuarioService.findByTelefone(contato.getTelefone());
         if (donoDoContato != null) {
-           contato = contatoRepository.save(contato);
-           usuario.getContatos().add(contato);
-           usuarioService.save(usuario);
+            contato.setDono(usuario);
+            usuario.getContatos().add(contato);
+            contatoRepository.save(contato);
+            usuarioService.save(usuario);
         }else {
             throw new Exception("O número não existe");
         }
@@ -44,9 +47,13 @@ public class ContatoService {
         return contatoRepository.findAll();
     }
 
-    public boolean deletar(UUID id){
+    public boolean deletar(UUID id, Usuario usuario){
         if (contatoRepository.existsById(id)){
-            contatoRepository.deleteById(id);
+            usuario = usuarioService.findById(usuario.getId());
+            Contato contato = contatoRepository.findById(id).orElse(null);
+            usuario.getContatos().remove(contato);
+            usuarioService.save(usuario);
+
             return true;
         }
         return false;
@@ -67,8 +74,7 @@ public class ContatoService {
         if(contato == null) {
             throw new ClassNotFoundException("O contato não está na lista do usuário");
         }
-        usuario.getContatos().remove(contato);
-        usuario.getBloqueados().add(contato);
+        contato.setBloqueado(true);
         contatoRepository.save(contato);
         usuarioService.save(usuario);
     }
@@ -78,11 +84,10 @@ public class ContatoService {
         usuario = usuarioService.findById(usuario.getId());
         if(contato == null) {
             throw new ClassNotFoundException("Contato informado não existe");
-        }else if(!usuario.getBloqueados().contains(contato)){
+        }else if(!contato.isBloqueado()){
             throw new ClassNotFoundException("Contato informado não está bloqueado");
         }
-        usuario.getBloqueados().remove(contato);
-        usuario.getContatos().add(contato);
+        contato.setBloqueado(false);
         contatoRepository.save(contato);
         usuarioService.save(usuario);
     }

@@ -23,10 +23,8 @@ public class Usuario {
     private String login;
     private String senha;
     private String telefone;
-    @OneToMany (fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany (mappedBy = "dono", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Contato> contatos;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    private List<Contato> bloqueados;
 
     public Usuario(String nome, String login, String senha, String telefone) {
        this.nome = nome;

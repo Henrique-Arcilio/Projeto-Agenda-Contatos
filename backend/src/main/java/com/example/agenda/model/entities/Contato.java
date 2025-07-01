@@ -1,9 +1,7 @@
 package com.example.agenda.model.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,9 +10,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
 @NoArgsConstructor
+@Getter @Setter
 public class Contato {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -22,6 +19,12 @@ public class Contato {
     private String nome;
     private String telefone;
     private String email;
+    @ManyToOne
+    @JoinColumn
+    @JsonIgnore
+    private Usuario dono;
+
+    private boolean bloqueado;
 
     public Contato(String nome, String telefone, String email) {
         this.nome = nome;
@@ -40,4 +43,6 @@ public class Contato {
     public int hashCode() {
         return Objects.hashCode(telefone);
     }
+
+
 }

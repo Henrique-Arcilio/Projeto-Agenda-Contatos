@@ -8,6 +8,7 @@ import com.example.agenda.model.repository.ContatoRepository;
 import com.example.agenda.model.entities.Usuario;
 
 import com.example.agenda.model.services.ContatoService;
+import com.example.agenda.model.services.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,22 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/contatos")
 public class ContatoController {
+<<<<<<< Updated upstream
 
     private ContatoRepository contatoRepository;
+=======
+<<<<<<< HEAD
+    private final UsuarioService usuarioService;
+=======
+
+    private ContatoRepository contatoRepository;
+>>>>>>> 5544fad20b0f2c703a762bcbc8cc5a0be0e99b62
+>>>>>>> Stashed changes
     private ContatoService contatoService;
 
-    public ContatoController(ContatoService contatoService) {
+    public ContatoController(ContatoService contatoService, UsuarioService usuarioService) {
         this.contatoService = contatoService;
+        this.usuarioService = usuarioService;
     }
 
     @PostMapping("/salvar")
@@ -40,15 +51,22 @@ public class ContatoController {
     }
 
     @GetMapping("/listar")
-    public List<Contato> listarContatos(){
-        return contatoService.listar();
+    public List<Contato> listarContatos(HttpSession session){
+        Usuario usuarioLogado = (Usuario) session.getAttribute("usuario");
+        if(usuarioLogado != null){
+            return usuarioLogado.getContatos();
+        }
+        return null;
     }
 
+
     @DeleteMapping("/deletar/{id}")
-    public ResponseEntity<Void> deletarContato(@PathVariable("id") String id){
+    public ResponseEntity<Void> deletarContato(@PathVariable("id") String id, HttpSession session){
         UUID idContato = UUID.fromString(id);
-        boolean contatoDeletado = contatoService.deletar(idContato);
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        boolean contatoDeletado = contatoService.deletar(idContato, usuario);
         if (contatoDeletado) {
+            session.setAttribute("usuario", usuarioService.findById(usuario.getId()));
 
             return ResponseEntity.noContent().build();
         } else {
@@ -93,9 +111,8 @@ public class ContatoController {
     public ResponseEntity<Contato> buscarContatoPorId(@PathVariable UUID id, HttpSession session) {
         Usuario usuario = (Usuario) session.getAttribute("usuario");
         if (usuario == null) {
-            return ResponseEntity.status(401).build(); // Não autorizado
+            return ResponseEntity.status(401).build();
         }
-
         Contato contato = contatoService.buscarPorId(id, usuario);
         if (contato != null) {
             return ResponseEntity.ok(contato);

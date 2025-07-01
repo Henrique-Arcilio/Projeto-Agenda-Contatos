@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 public class UsuarioController {
 
     private UsuarioService service;
-    private HttpSession session;
+    private HttpSession sessionAuth;
 
     public UsuarioController(UsuarioService service, HttpSession session) {
         this.service = service;
-        this.session = session;
+        this.sessionAuth = session;
     }
 
     @PostMapping("/cadastro")
@@ -31,7 +31,10 @@ public class UsuarioController {
     }
     @PostMapping("/autenticacao")
     public ResponseEntity<String> autenticar(@RequestBody UsuarioLogarDto loginDto, HttpSession session){
-        session = service.autenticar(loginDto, session);
+        sessionAuth = service.autenticar(loginDto, session);
+        System.out.println("Sessão ID: " + session.getId());
+        System.out.println("Usuário na sessão: " + session.getAttribute("usuario"));
+
         if(session.getAttribute("usuario") != null){
             return ResponseEntity.ok().body("Login validado");
         }

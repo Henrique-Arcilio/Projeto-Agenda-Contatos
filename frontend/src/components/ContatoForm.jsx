@@ -21,9 +21,11 @@ const ContatoForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.post('http://localhost:8080/contatos/salvar', formData, {
+      withCredentials: true,
       headers: {
         'Content-Type': 'application/json'
       }
+      
     })
     
       .then(res => {

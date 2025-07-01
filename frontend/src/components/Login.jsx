@@ -3,6 +3,8 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 
+axios.defaults.withCredentials = true;
+
 const Login = () => {
   const navigate = useNavigate();
 
@@ -24,7 +26,9 @@ const Login = () => {
     e.preventDefault();
     setErroLogin(false);
 
-    axios.post('http://localhost:8080/usuarios/autenticacao', formData)
+    axios.post('http://localhost:8080/usuarios/autenticacao', formData, {
+      withCredentials: true
+    })
       .then(() => {
         navigate('/contato/visualizar');
       })

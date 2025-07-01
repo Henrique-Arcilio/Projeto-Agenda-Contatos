@@ -23,20 +23,49 @@ const DetalhesContato = () => {
   const [open, setOpen] = useState(false);
   const [openBloquear, setOpenBloquear] = useState(false);
   const [bloqueado, setBloqueado] = useState(false);
+  const [editando, setEditando] = useState(false);
+  const [formData, setFormData] = useState({
+    nome: '',
+    email: '',
+    telefone: ''
+  });
 
-  // Buscar contato
   useEffect(() => {
     axios.get(`http://localhost:8080/contatos/${id}`)
       .then(res => {
+        console.log(res.data);
         setContato(res.data);
-        setBloqueado(res.data.bloqueado || false); // Se já estiver bloqueado
+        setFormData({
+          nome: res.data.nome,
+          email: res.data.email,
+          telefone: res.data.telefone
+        });
+        setBloqueado(res.data.bloqueado || false);
       })
-      .catch(err => {
-        console.error("Erro ao buscar contato:", err);
-      });
+      .catch(err => console.error("Erro ao buscar contato:", err));
   }, [id]);
 
-  // Ações
+  const handleEditar = () => {
+    setEditando(true);
+  };
+
+  const handleSalvar = () => {
+    axios.put(`http://localhost:8080/contatos/editar/${id}`, formData)
+      .then(() => {
+        setContato(formData);
+        setEditando(false);
+      })
+      .catch(err => {
+        console.error("Erro ao salvar alterações:", err);
+      });
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+
   const handleExcluir = () => {
     axios.delete(`http://localhost:8080/contatos/deletar/${id}`)
       .then(() => {
@@ -57,6 +86,18 @@ const DetalhesContato = () => {
         console.error("Erro ao bloquear:", err);
       });
   };
+
+  const handleDesbloquear = () => {
+    axios.put(`http://localhost:8080/contatos/desbloquear/${id}`)
+      .then(() => {
+        setBloqueado(false);
+        navigate('/contato/visualizar'); // se quiser redirecionar
+      })
+      .catch(err => {
+        console.error("Erro ao desbloquear:", err);
+      });
+  };
+
 
   
 
@@ -97,27 +138,33 @@ const DetalhesContato = () => {
         </h2>
 
         <TextField
-          disabled
+          disabled={!editando}
           label="Nome"
-          value={contato?.nome || ''}
+          name="nome"
+          value={formData.nome}
+          onChange={handleChange}
           fullWidth
           required
           sx={{ marginBottom: '16px', '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
         />
 
         <TextField
-          disabled
+          disabled={!editando}
           label="Email"
-          value={contato?.email || ''}
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
           fullWidth
           required
           sx={{ marginBottom: '16px', '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
         />
 
         <TextField
-          disabled
+          disabled={!editando}
           label="Telefone"
-          value={contato?.telefone || ''}
+          name="telefone"
+          value={formData.telefone}
+          onChange={handleChange}
           fullWidth
           required
           sx={{ marginBottom: '16px', '& .MuiOutlinedInput-root': { borderRadius: '12px' } }}
@@ -130,17 +177,29 @@ const DetalhesContato = () => {
           size="medium"
           sx={{ marginTop: '20px' }}
         >
-          <Button onClick={handleClickBloquear} startIcon={<BlockIcon />}>
-            Bloquear
-          </Button>
+          {!bloqueado && (
+            <Button onClick={handleClickBloquear} startIcon={<BlockIcon />}>
+              Bloquear
+            </Button>
+          )}
 
           {bloqueado && (
-            <Button startIcon={<BlockIcon />} color="secondary">
+            <Button onClick={handleDesbloquear} startIcon={<BlockIcon />} color="secondary">
               Desbloquear
             </Button>
           )}
 
-          <Button startIcon={<EditRoundedIcon />}>Editar</Button>
+          {editando ? (
+            <Button onClick={handleSalvar} startIcon={<EditRoundedIcon />} color="success">
+              Salvar
+            </Button>
+          ) : (
+            <Button onClick={handleEditar} startIcon={<EditRoundedIcon />}>
+              Editar
+            </Button>
+            
+          )}
+
 
           <Button onClick={handleClickOpen} startIcon={<DeleteIcon />} color="error">
             Deletar
