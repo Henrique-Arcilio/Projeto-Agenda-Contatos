@@ -134,17 +134,13 @@ const DetalhesContato = () => {
         flexDirection: 'column',
         alignItems: 'center'
       }}>
-
-        <Button onClick={redirectVisualizar} startIcon={<ArrowBackIcon />} color="primary">
-          Voltar
-        </Button>
-
+        
         <h2 style={{
           textAlign: 'center',
           fontSize: '24px',
           fontWeight: '600',
           color: '#000',
-          marginBottom: '20px'
+          marginBottom: '40px'
         }}>
           Editar Contato
         </h2>
@@ -214,8 +210,33 @@ const DetalhesContato = () => {
             Deletar
           </Button>
         </ButtonGroup>
+        <div style={{
+                    marginTop: '20px',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        type="submit"
+                        fullWidth
+                        startIcon={<ArrowBackIcon/>}
+                        sx={{
+                            width: '100%',
+                            borderRadius: '12px',
+                            textTransform: 'none',
+                            fontWeight: '600',
+                            fontSize: '16px',
+                            marginTop: '10px',
+                            '&:hover': {
+                                backgroundColor: '#ccdff4',
+                                borderColor: '#005FCC'
+                            }
+                        }} onClick={redirectVisualizar}> Voltar
+                    </Button>
+                </div>
 
-        {/* Diálogo de Bloquear */}
+
         <Dialog
           open={openBloquear}
           TransitionComponent={Transition}

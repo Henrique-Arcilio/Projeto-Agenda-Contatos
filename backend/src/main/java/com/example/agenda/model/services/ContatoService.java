@@ -99,5 +99,7 @@ public class ContatoService {
                 .orElse(null);
     }
 
-
+    public List<Contato> buscarBloqueados(UUID id){
+        return contatoRepository.buscarBloqueados(id);
+    }
 }

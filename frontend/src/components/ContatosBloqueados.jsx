@@ -12,10 +12,14 @@ const ContatosBloqueados = () => {
     };
 
   useEffect(() => {
-    axios.get('http://localhost:8080/contatos/listar')
+    axios.get('http://localhost:8080/contatos/listarBloqueados')
       .then(response => setContatos(response.data))
       .catch(error => console.error("Erro ao buscar dados:", error));
   }, []);
+
+  const redirectVisualizar = () => {
+    navigate('/contato/visualizar');
+  }
 
   return (
     <div style={{
@@ -92,7 +96,30 @@ const ContatosBloqueados = () => {
               )}
             </tbody>
           </table>
+        
         </div>
+        <Button 
+            variant="outlined"
+            color="primary"
+            type="submit"
+            fullWidth
+
+            sx={{
+              borderRadius: '12px',
+              textTransform: 'none',
+              fontWeight: '600',
+              fontSize: '16px',
+              padding: '10px 0',
+              marginTop: '10px',
+              '&:hover': {
+                  backgroundColor: '#ccdff4',
+                  borderColor: '#005FCC'
+              }
+              }}
+
+            onClick={redirectVisualizar}> 
+            Visualizar Contatos
+          </Button>
       </div>
     </div>
   );

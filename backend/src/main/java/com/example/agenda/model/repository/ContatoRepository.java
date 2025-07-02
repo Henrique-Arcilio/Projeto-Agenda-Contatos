@@ -19,4 +19,7 @@ public interface ContatoRepository extends JpaRepository<Contato, UUID> {
 
     @Query("SELECT c FROM Contato c WHERE LOWER(c.email) LIKE LOWER(CONCAT('%', :email, '%'))")
     List<Contato> buscarPorEmail(@Param("email") String email);
+
+    @Query("SELECT contato FROM Contato contato WHERE contato.bloqueado=true AND contato.dono.id = :dono")
+    List<Contato> buscarBloqueados(UUID dono);
 }

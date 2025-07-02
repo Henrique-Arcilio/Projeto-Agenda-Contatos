@@ -54,7 +54,7 @@ public class ContatoController {
     public List<Contato> listarBloqueados(HttpSession session){
         Usuario usuarioLogado = (Usuario) session.getAttribute("usuario");
         if(usuarioLogado != null){
-            return usuarioLogado.getContatos();
+            return contatoService.buscarBloqueados(usuarioLogado.getId());
         }
         return null;
     }
