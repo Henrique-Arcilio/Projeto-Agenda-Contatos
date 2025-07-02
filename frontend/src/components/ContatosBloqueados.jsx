@@ -4,21 +4,12 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
-const VisualizarContato = () => {
-  const [contatos, setContatos] = useState([]);
-  const navigate = useNavigate();
-
-  const irParaAdicao = () => {
-    navigate('/contato/adicionar');
-  };
-
-  const handleContatosBloqueados = () => {
-    navigate('/contato/bloqueados');
-  };
-
-  const editarContato = (id) => {
-    navigate(`/contato/detalhesContato/${id}`);
-  };
+const ContatosBloqueados = () => {
+    const [contatos, setContatos] = useState([]);
+    const navigate = useNavigate();
+    const editarContato = (id) => {
+        navigate(`/contato/detalhesContato/${id}`);
+    };
 
   useEffect(() => {
     axios.get('http://localhost:8080/contatos/listar')
@@ -90,10 +81,10 @@ const VisualizarContato = () => {
                     <td style={{ textAlign: 'center', padding: '10px', borderBottom: '1px solid #ccc' }}>{contato.telefone}</td>
                     <td style={{ textAlign: 'center', padding: '10px', borderBottom: '1px solid #ccc' }}>{contato.email}</td>
                     <td style={{ textAlign: 'center', padding: '10px', borderBottom: '1px solid #ccc' }}>
-                      <Button
-                        onClick={() => editarContato(contato.id)}
-                        variant="text"
-                        startIcon={<EditRoundedIcon />}
+                        <Button
+                            onClick={() => editarContato(contato.id)}
+                            variant="text"
+                            startIcon={<EditRoundedIcon />}
                       />
                     </td>
                   </tr>
@@ -102,48 +93,9 @@ const VisualizarContato = () => {
             </tbody>
           </table>
         </div>
-
-        {/* Botões fixos */}
-        <Button
-          onClick={irParaAdicao}
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{
-            backgroundColor: '#007AFF',
-            borderRadius: '12px',
-            textTransform: 'none',
-            fontWeight: '600',
-            fontSize: '16px',
-            padding: '10px 0',
-            marginBottom: '10px'
-          }}
-        >
-          Adicionar Contato
-        </Button>
-
-        <Button
-          variant="outlined"
-          color="primary"
-          fullWidth
-          onClick={handleContatosBloqueados}
-          sx={{
-            borderRadius: '12px',
-            textTransform: 'none',
-            fontWeight: '600',
-            fontSize: '16px',
-            padding: '10px 0',
-            '&:hover': {
-              backgroundColor: '#ccdff4',
-              borderColor: '#005FCC'
-            }
-          }}
-        >
-          Visualizar contatos bloqueados
-        </Button>
       </div>
     </div>
   );
 };
 
-export default VisualizarContato;
+export default ContatosBloqueados;

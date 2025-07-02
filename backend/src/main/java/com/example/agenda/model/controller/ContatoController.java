@@ -10,7 +10,6 @@ import com.example.agenda.model.entities.Usuario;
 import com.example.agenda.model.services.ContatoService;
 import com.example.agenda.model.services.UsuarioService;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
@@ -22,17 +21,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/contatos")
 public class ContatoController {
-<<<<<<< Updated upstream
-
     private ContatoRepository contatoRepository;
-=======
-<<<<<<< HEAD
     private final UsuarioService usuarioService;
-=======
 
-    private ContatoRepository contatoRepository;
->>>>>>> 5544fad20b0f2c703a762bcbc8cc5a0be0e99b62
->>>>>>> Stashed changes
     private ContatoService contatoService;
 
     public ContatoController(ContatoService contatoService, UsuarioService usuarioService) {
@@ -59,6 +50,14 @@ public class ContatoController {
         return null;
     }
 
+    @GetMapping("/listarBloqueados")
+    public List<Contato> listarBloqueados(HttpSession session){
+        Usuario usuarioLogado = (Usuario) session.getAttribute("usuario");
+        if(usuarioLogado != null){
+            return usuarioLogado.getContatos();
+        }
+        return null;
+    }
 
     @DeleteMapping("/deletar/{id}")
     public ResponseEntity<Void> deletarContato(@PathVariable("id") String id, HttpSession session){

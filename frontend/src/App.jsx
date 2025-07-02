@@ -8,7 +8,8 @@ import VisualizarContato from './components/VisualizarContato.jsx';
 import ContatoForm from './components/ContatoForm.jsx';
 import Login from './components/Login.jsx';
 import DetalhesContato from './components/DetalhesContato.jsx';
-import Cadastro from './components/Cadastro.jsx'
+import Cadastro from './components/Cadastro.jsx';
+import ContatosBloqueados from './components/ContatosBloqueados.jsx';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
                 <Route path="/contato/visualizar" element={<VisualizarContato />} />
                 <Route path="/usuario/cadastrar" element={<Cadastro />}></Route>
                 <Route path="/contato/detalhesContato/:id" element={<DetalhesContato />} />
+                <Route path="/contato/bloqueados" element={<ContatosBloqueados />} />
             </Routes>
         </Router>
     </ThemeProvider>

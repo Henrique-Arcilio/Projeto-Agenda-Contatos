@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation  } from 'react-router-dom';
 import axios from 'axios';
 import { ButtonGroup, TextField, Button } from '@mui/material';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -11,6 +11,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
+import SaveIcon from '@mui/icons-material/Save';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -24,35 +26,40 @@ const DetalhesContato = () => {
   const [openBloquear, setOpenBloquear] = useState(false);
   const [bloqueado, setBloqueado] = useState(false);
   const [editando, setEditando] = useState(false);
+  const location = useLocation();
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
     telefone: ''
   });
 
-  useEffect(() => {
-    axios.get(`http://localhost:8080/contatos/${id}`)
-      .then(res => {
-        console.log(res.data);
-        setContato(res.data);
-        setFormData({
-          nome: res.data.nome,
-          email: res.data.email,
-          telefone: res.data.telefone
-        });
-        setBloqueado(res.data.bloqueado || false);
-      })
-      .catch(err => console.error("Erro ao buscar contato:", err));
-  }, [id]);
+  const carregarContato = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8080/contatos/${id}`);
+      setContato(res.data);
+      setFormData({
+        nome: res.data.nome,
+        email: res.data.email,
+        telefone: res.data.telefone,
+      });
+      setBloqueado(res.data.bloqueado || false);
+    } catch (err) {
+      console.error("Erro ao buscar contato:", err);
+    }
+  };
 
   const handleEditar = () => {
     setEditando(true);
   };
 
+  useEffect(() => {
+    carregarContato();
+  }, [id, location.key]);
+
   const handleSalvar = () => {
     axios.put(`http://localhost:8080/contatos/editar/${id}`, formData)
       .then(() => {
-        setContato(formData);
+        carregarContato(); // recarrega dados, incluindo status de bloqueio
         setEditando(false);
       })
       .catch(err => {
@@ -64,7 +71,6 @@ const DetalhesContato = () => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
-
 
   const handleExcluir = () => {
     axios.delete(`http://localhost:8080/contatos/deletar/${id}`)
@@ -91,15 +97,16 @@ const DetalhesContato = () => {
     axios.put(`http://localhost:8080/contatos/desbloquear/${id}`)
       .then(() => {
         setBloqueado(false);
-        navigate('/contato/visualizar'); // se quiser redirecionar
+        carregarContato(); // para garantir consistência
       })
       .catch(err => {
         console.error("Erro ao desbloquear:", err);
       });
   };
 
-
-  
+  const redirectVisualizar = () => {
+    navigate('/contato/visualizar');
+  };
 
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -127,6 +134,11 @@ const DetalhesContato = () => {
         flexDirection: 'column',
         alignItems: 'center'
       }}>
+
+        <Button onClick={redirectVisualizar} startIcon={<ArrowBackIcon />} color="primary">
+          Voltar
+        </Button>
+
         <h2 style={{
           textAlign: 'center',
           fontSize: '24px',
@@ -177,29 +189,26 @@ const DetalhesContato = () => {
           size="medium"
           sx={{ marginTop: '20px' }}
         >
-          {!bloqueado && (
+          {bloqueado ? (
+            <Button onClick={handleDesbloquear} startIcon={<BlockIcon />} color="secondary">
+              Desbloquear
+            </Button>
+          ) : (
             <Button onClick={handleClickBloquear} startIcon={<BlockIcon />}>
               Bloquear
             </Button>
           )}
 
-          {bloqueado && (
-            <Button onClick={handleDesbloquear} startIcon={<BlockIcon />} color="secondary">
-              Desbloquear
-            </Button>
-          )}
 
           {editando ? (
-            <Button onClick={handleSalvar} startIcon={<EditRoundedIcon />} color="success">
+            <Button onClick={handleSalvar} startIcon={<SaveIcon />} color="success">
               Salvar
             </Button>
           ) : (
             <Button onClick={handleEditar} startIcon={<EditRoundedIcon />}>
               Editar
             </Button>
-            
           )}
-
 
           <Button onClick={handleClickOpen} startIcon={<DeleteIcon />} color="error">
             Deletar
@@ -226,7 +235,6 @@ const DetalhesContato = () => {
           </DialogActions>
         </Dialog>
 
-        {/* Diálogo de Excluir */}
         <Dialog
           open={open}
           TransitionComponent={Transition}
